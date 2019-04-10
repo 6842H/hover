@@ -1,6 +1,6 @@
 ﻿
 var hot=null;	//当前鼠标所指的标签
-var xpath_key=9;	//获取xpath的快捷键：Tab9  `~192
+var xpath_key=192;	//获取xpath的快捷键：Tab 9  `~ 192
 
 // 添加到body后面
 //div{width: 100%; height: 30px; position: fixed; top: 0;opacity:0.75;}  
