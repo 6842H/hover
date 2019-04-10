@@ -19,4 +19,3 @@ function loadJS(url){
 
 //loadCSS('http://127.0.0.1/mycss.css')
 loadJS('http://127.0.0.1/myscript.js')
-xpath_key=9;	//重置获取xpath的快捷键
