@@ -17,7 +17,6 @@ function loadJS(url){
 	head.appendChild(mlink);
 }
 
-xpath_key=9;	//重置获取xpath的快捷键
-
 //loadCSS('http://127.0.0.1/mycss.css')
-loadJS('http://127.0.0.1/myscript.js')
+loadJS('http://127.0.0.1/tools/myscript.js')
+//xpath_key=9;	//重置获取xpath的快捷键

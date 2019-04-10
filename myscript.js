@@ -1,6 +1,7 @@
 ﻿
 var hot=null;	//当前鼠标所指的标签
-var xpath_key=9;	//获取xpath的快捷键：Tab9  `~192
+var xpath_key=192	//获取xpath的快捷键：Tab 9  `~ 192
+
 
 // 添加到body后面
 //div{width: 100%; height: 30px; position: fixed; top: 0;opacity:0.75;}  
@@ -9,6 +10,20 @@ function addXpathPanel() {
 	//beforeBegin、 afterBegin、beforeEnd、afterEnd
 	document.getElementsByTagName('body')[0].insertAdjacentHTML("afterBegin",tag);
 };
+
+
+//获取滚动条滚动的距离
+function getScroll() {  
+    if(window.pageYOffset != null) {  // ie9+ 高版本浏览器
+        return [window.pageXOffset, window.pageYOffset];
+    }
+    else if(document.compatMode === "CSS1Compat") {    // 标准浏览器,来判断有没有声明DTD
+        return [document.documentElement.scrollLeft, document.documentElement.scrollTop];
+    }
+	// 未声明 DTD
+    return [document.body.scrollLeft, document.body.scrollTop];
+}
+
 
 //获取标签的xpath
 function getXpath(element) {
@@ -45,10 +60,22 @@ function stopBubble(e) {
 		//否则，我们需要使用IE的方式来取消事件冒泡 
 		window.event.cancelBubble = true; 
 };
-
-
+//clientY
+//scrollTop
+//
+//方案一： 鼠标和标签都用相对于浏览器窗口的坐标
 //获取鼠标坐标
 function getMousePos(event) {
+    var e = event || window.event;
+	var x = e.clientX;
+	var y = e.clientY;
+    return [x, y];
+}
+
+
+//方案二： 鼠标和标签都用绝对坐标
+//获取鼠标坐标
+function getMousePos2(event) {
    var e = event || window.event;
    var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
    var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
@@ -68,11 +95,11 @@ function check_region(element, recolor){
 	mouse_x = mouse_pos[0];
 	mouse_y = mouse_pos[1];
 	
-	self_rect = element.getBoundingClientRect();	//本标签的位置
+	//self_rect = element.getBoundingClientRect();	
 	
 	//检查鼠标是否落在下层标签内，若鼠标在子标签内，本标签恢复原色
 	for(var i= 0,L = children.length; i < L; i++){
-		child_rect = children[i].getBoundingClientRect();
+		child_rect = children[i].getBoundingClientRect();	//标签相对于浏览器窗口（viewport）左上角的位置
 		if ((mouse_x > child_rect.left && mouse_x < child_rect.right) && (mouse_y > child_rect.top && mouse_y < child_rect.bottom)){
 			element.style.backgroundColor = recolor;
 			return;
@@ -97,7 +124,7 @@ function recoverColor(element, recolor){
 function addKeyMonitor(){
 	if(navigator.userAgent.indexOf("MSIE")>0){          
 		document.onkeydown=function(){
-	　　	if(xpath_key == event.keyCode){　//Tab9  `~192
+	　　	if(192 == event.keyCode){　//Tab9  `~192
 				document.getElementById('xpath_panel').value=hot;
 				//e.preventDefault();
 	　　	}
@@ -105,7 +132,7 @@ function addKeyMonitor(){
 	}
 	else{     //非IE      
 		window.onkeydown=function(){
-	　　	if(xpath_key == event.keyCode){
+	　　	if(192 == event.keyCode){
 	　　　　　　document.getElementById('xpath_panel').value=hot;
 				//e.preventDefault();
 	　　　　}
@@ -144,4 +171,5 @@ function addHover(){
 }
 addKeyMonitor();
 addXpathPanel();
+//对于有异步加载生成的的标签需要重新调用addHover();方法，或者可以设置一个定时器，每隔一段时间执行一次addHover();
 addHover();
