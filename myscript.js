@@ -1,5 +1,6 @@
 ﻿
 var hot=null;	//当前鼠标所指的标签
+var xpath_key=9;	//Tab9  `~192
 
 // 添加到body后面
 //div{width: 100%; height: 30px; position: fixed; top: 0;opacity:0.75;}  
@@ -96,7 +97,7 @@ function recoverColor(element, recolor){
 function addKeyMonitor(){
 	if(navigator.userAgent.indexOf("MSIE")>0){          
 		document.onkeydown=function(){
-	　　	if(192 == event.keyCode){　//Tab9  `~192
+	　　	if(xpath_key == event.keyCode){　//Tab9  `~192
 				document.getElementById('xpath_panel').value=hot;
 				//e.preventDefault();
 	　　	}
@@ -104,7 +105,7 @@ function addKeyMonitor(){
 	}
 	else{     //非IE      
 		window.onkeydown=function(){
-	　　	if(192 == event.keyCode){
+	　　	if(xpath_key == event.keyCode){
 	　　　　　　document.getElementById('xpath_panel').value=hot;
 				//e.preventDefault();
 	　　　　}
